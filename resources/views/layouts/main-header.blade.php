@@ -3,9 +3,9 @@
         <nav class="admin-header navbar navbar-default col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <!-- logo -->
             <div class="text-left navbar-brand-wrapper">
-                <a class="navbar-brand brand-logo" href="{{ route('home') }}"><img
+                <a class="navbar-brand brand-logo" href="{{ route('dashboard') }}"><img
                         src="{{ URL::asset('assets/images/logo-dark.png') }}" alt=""></a>
-                <a class="navbar-brand brand-logo-mini" href="{{ route('home') }}"><img
+                <a class="navbar-brand brand-logo-mini" href="{{ route('dashboard') }}"><img
                         src="{{ URL::asset('assets/images/logo-icon-dark.png') }}" alt=""></a>
             </div>
             <!-- Top bar left -->
@@ -60,87 +60,169 @@
                     <div class="dropdown-menu dropdown-menu-right dropdown-big dropdown-notifications">
                         <div class="dropdown-header notifications">
                             <strong>Notifications</strong>
-                            <span class="badge badge-pill badge-warning">05</span>
+                            <a href="{{ route('Quizzes.MarkAsRead_all') }}"
+                                class="badge badge-pill badge-warning mr-auto my-auto float-right">قراءة الكل</a>
+                            <div class="d-flex mt-3">
+                                <p class="dropdown-title-text subtext mb-0 op-6 pb-0 tx-12 ">
+                                    عدد الاشعارات غير المقروءة:</p>
+                                <span
+                                    class="badge badge-pill badge-warning ml-2">({{ auth()->user()->unreadNotifications->count() < 10? '0' .auth()->user()->unreadNotifications->count(): auth()->user()->unreadNotifications->count() }})</span>
+                            </div>
                         </div>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">New registered user <small
-                                class="float-right text-muted time">Just now</small> </a>
-                        <a href="#" class="dropdown-item">New invoice received <small
-                                class="float-right text-muted time">22 mins</small> </a>
-                        <a href="#" class="dropdown-item">Server error report<small
-                                class="float-right text-muted time">7 hrs</small> </a>
-                        <a href="#" class="dropdown-item">Database report<small
-                                class="float-right text-muted time">1
-                                days</small> </a>
-                        <a href="#" class="dropdown-item">Order confirmation<small
-                                class="float-right text-muted time">2
-                                days</small> </a>
+                        @foreach (auth()->user()->unreadNotifications as $notification)
+                            <div class="dropdown-divider"></div>
+                            <a href="{{-- route('InvoicesDetails', $notification->data['id']) --}}" class="dropdown-item">{{ $notification->data['title'] }}
+                                {{ $notification->data['user'] }} <small
+                                    class="float-right text-muted time">{{ $notification->created_at }}</small> </a>
+                        @endforeach
                     </div>
                 </li>
-                <li class="nav-item dropdown ">
-                    <a class="nav-link top-nav" data-toggle="dropdown" href="#" role="button"
-                        aria-haspopup="true" aria-expanded="true"> <i class=" ti-view-grid"></i> </a>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-big">
-                        <div class="dropdown-header">
-                            <strong>Quick Links</strong>
+                @if (auth('student')->check())
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link top-nav" data-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="true" aria-expanded="true"> <i class=" ti-view-grid"></i> </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-big">
+                            <div class="dropdown-header">
+                                <strong>Quick Links</strong>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="nav-grid">
+                                <a href="{{ route('exam.index') }}" class="nav-grid-item"><i
+                                        class="ti-check-box text-success"></i>
+                                    <h5>Assign Task</h5>
+                                </a>
+                            </div>
                         </div>
-                        <div class="dropdown-divider"></div>
-                        <div class="nav-grid">
-                            <a href="#" class="nav-grid-item"><i class="ti-files text-primary"></i>
-                                <h5>New Task</h5>
-                            </a>
-                            <a href="#" class="nav-grid-item"><i class="ti-check-box text-success"></i>
-                                <h5>Assign Task</h5>
-                            </a>
+                    </li>
+                @elseif(auth('teacher')->check())
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link top-nav" data-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="true" aria-expanded="true"> <i class=" ti-view-grid"></i> </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-big">
+                            <div class="dropdown-header">
+                                <strong>Quick Links</strong>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="nav-grid">
+                                <a href="{{ route('quizze.create') }}" class="nav-grid-item"><i
+                                        class="ti-files text-primary"></i>
+                                    <h5>New Task</h5>
+                                </a>
+                            </div>
                         </div>
-                        <div class="nav-grid">
-                            <a href="#" class="nav-grid-item"><i class="ti-pencil-alt text-warning"></i>
-                                <h5>Add Orders</h5>
-                            </a>
-                            <a href="#" class="nav-grid-item"><i class="ti-truck text-danger "></i>
-                                <h5>New Orders</h5>
-                            </a>
+                    </li>
+                @else
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link top-nav" data-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="true" aria-expanded="true"> <i class=" ti-view-grid"></i> </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-big">
+                            <div class="dropdown-header">
+                                <strong>Quick Links</strong>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="nav-grid">
+                                <a href="{{ route('Quizzes.create') }}" class="nav-grid-item"><i
+                                        class="ti-files text-primary"></i>
+                                    <h5>New Task</h5>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                @endif
+
                 <li class="nav-item dropdown mr-30">
                     <a class="nav-link nav-pill user-avatar" data-toggle="dropdown" href="#" role="button"
                         aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ URL::asset('assets/images/user_icon.png') }}" alt="avatar">
+                        @if (auth('student')->check())
+                            @if (Auth::user()->avatar == null)
+                                <img src="{{ URL::asset('attachments/profile/user_icon.png') }}">
+                            @else
+                                <img src="{{ URL::asset('attachments/profile/student/' . Auth::user()->id . '/' . Auth::user()->avatar) }}"
+                                    alt="avatar">
+                            @endif
+                        @elseif(auth('teacher')->check())
+                            @if (Auth::user()->avatar == null)
+                                <img src="{{ URL::asset('attachments/profile/user_icon.png') }}">
+                            @else
+                                <img src="{{ URL::asset('attachments/profile/teacher/' . Auth::user()->id . '/' . Auth::user()->avatar) }}"
+                                    alt="avatar">
+                            @endif
+                        @elseif(auth('parent')->check())
+                            @if (Auth::user()->avatar == null)
+                                <img src="{{ URL::asset('attachments/profile/user_icon.png') }}">
+                            @else
+                                <img src="{{ URL::asset('attachments/profile/parent/' . Auth::user()->id . '/' . Auth::user()->avatar) }}"
+                                    alt="avatar">
+                            @endif
+                        @else
+                            @if (Auth::user()->avatar == null)
+                                <img src="{{ URL::asset('attachments/profile/user_icon.png') }}">
+                            @else
+                                <img src="{{ URL::asset('attachments/profile/Admin/' . Auth::user()->id . '/' . Auth::user()->avatar) }}"
+                                    alt="avatar">
+                            @endif
+                        @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="dropdown-header">
                             <div class="media">
                                 <div class="media-body">
-                                    <h5 class="mt-0 mb-0">{{ Auth::user()->name }}</h5>
-                                    <span>{{ Auth::user()->email }}</span>
+                                    @if (auth('student')->check())
+                                        <h5 class="mt-0 mb-0">{{ Auth::user()->name }}</h5>
+                                        <span>{{ Auth::user()->email }}</span>
+                                    @elseif(auth('teacher')->check())
+                                        <h5 class="mt-0 mb-0">{{ Auth::user()->Name }}</h5>
+                                        <span>{{ Auth::user()->email }}</span>
+                                    @elseif(auth('parent')->check())
+                                        <h5 class="mt-0 mb-0">{{ Auth::user()->Name_Father }}</h5>
+                                        <span>{{ Auth::user()->email }}</span>
+                                    @else
+                                        <h5 class="mt-0 mb-0">{{ Auth::user()->name }}</h5>
+                                        <span>{{ Auth::user()->email }}</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="text-secondary ti-reload"></i>Activity</a>
-                        <a class="dropdown-item" href="#"><i class="text-success ti-email"></i>Messages</a>
-                        <a class="dropdown-item" href="#"><i class="text-warning ti-user"></i>Profile</a>
-                        <a class="dropdown-item" href="#"><i class="text-dark ti-layers-alt"></i>Projects <span
-                                class="badge badge-info">6</span> </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="text-info ti-settings"></i>Settings</a>
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
-                                     document.getElementById('logout-form').submit();"><i
-                                class="text-danger ti-unlock"></i>{{ __('Logout') }}
-                        </a>
+                        @if (auth('student')->check())
+                            <a class="dropdown-item" href="{{ route('profileStudent.index') }}"><i
+                                    class="text-warning ti-user"></i>الملف الشحصي</a>
+                        @elseif(auth('teacher')->check())
+                            <a class="dropdown-item" href="{{ route('profile.index') }}"><i
+                                    class="text-warning ti-user"></i>الملف الشحصي</a>
+                        @elseif(auth('parent')->check())
+                            <a class="dropdown-item" href="{{ route('profileParent.index') }}"><i
+                                    class="text-warning ti-user"></i>الملف الشحصي</a>
+                        @else
+                            <a class="dropdown-item" href="{{ route('profileUser.index') }}"><i
+                                    class="text-warning ti-user"></i>الملف الشحصي</a>
+                        @endif
 
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
+
+                        @if (auth('web')->check())
+                            <a class="dropdown-item" href="{{ route('settings.index') }}"><i
+                                    class="text-info ti-settings"></i>الاعدادات</a>
+                        @endif
+                        @if (auth('student')->check())
+                            <form method="GET" action="{{ route('logout', 'student') }}">
+                            @elseif(auth('teacher')->check())
+                                <form method="GET" action="{{ route('logout', 'teacher') }}">
+                                @elseif(auth('parent')->check())
+                                    <form method="GET" action="{{ route('logout', 'parent') }}">
+                                    @else
+                                        <form method="GET" action="{{ route('logout', 'web') }}">
+                        @endif
+
+                        @csrf
+                        <a class="dropdown-item" href="#"
+                            onclick="event.preventDefault();this.closest('form').submit();">
+                            <i class='fas fa-lock'></i>
+                            تسجيل الخروج</a>
                         </form>
-
-
 
                     </div>
                 </li>
             </ul>
         </nav>
 
-        <!--=================================
- header End-->
+        <!--================================= header End =================================-->

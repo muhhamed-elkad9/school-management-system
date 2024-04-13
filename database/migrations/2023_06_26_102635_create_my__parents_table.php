@@ -17,6 +17,8 @@ class CreateMyParentsTable extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('avatar')->nullable();
+            $table->string('roles_name')->default('{"ar":"ولي أمر","en":"Parents"}');
 
             //Fatherinformation
             $table->string('Name_Father');

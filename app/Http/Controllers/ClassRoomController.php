@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class ClassroomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $Classroom = ClassRoom::all();
@@ -20,30 +15,14 @@ class ClassroomController extends Controller
         return view('Classroom.Classroom', compact('Classroom', 'Grades'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $Grades = Grade::all();
         return view('Classroom.create', compact('Grades'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        // if (ClassRoom::where('Name', $request->List_Classes->Name)->orwhere('Name->en', $request->List_Classes->Name_class_en)->exists()) {
-
-        //     return redirect()->back()->withErrors(['error' => 'اسم المرحلة موجود من قبل']);
-        // }
-
         $listClass = $request->List_Classes;
         foreach ($listClass as $list) {
 
@@ -53,26 +32,10 @@ class ClassroomController extends Controller
             ]);
         }
 
-        return redirect()->route('Classroom.index')->with(['add' => __('Classroom/Classroom.Add')]);
+        toastr()->success(__('messages.success'));
+        return redirect()->route('Classroom.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\ClassRoom  $classRoom
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ClassRoom $classRoom)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ClassRoom  $classRoom
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $Classes = ClassRoom::find($id);
@@ -81,13 +44,6 @@ class ClassroomController extends Controller
         return view('Classroom.update', compact('Classes', 'Grades'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ClassRoom  $classRoom
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
 
@@ -99,25 +55,22 @@ class ClassroomController extends Controller
             $Classes->Grade_id = $request->Grade_id,
         ]);
 
-        return redirect()->route('Classroom.index')->with(['edit' => __('ClassRoom/ClassRoom.edit')]);
+        toastr()->success(__('messages.Update'));
+        return redirect()->route('Classroom.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ClassRoom  $classRoom
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $ClassRoom = ClassRoom::find($id);
 
         if (!$ClassRoom) {
+            toastr()->error(__('messages.error'));
             return redirect()->route('Classroom.index')->with(['Err' => __('ClassRoom/ClassRoom.Err')]);
         } else {
             $ClassRoom->delete();
 
-            return redirect()->route('Classroom.index')->with(['deleted' => __('ClassRoom/ClassRoom.deleted')]);
+            toastr()->success(__('messages.Delete'));
+            return redirect()->route('Classroom.index');
         }
     }
 
@@ -128,13 +81,15 @@ class ClassroomController extends Controller
 
             ClassRoom::whereIn('id', $delete_all_id)->Delete();
 
-            return redirect()->route('Classroom.index')->with(['deleted' => __('ClassRoom/ClassRoom.deleted')]);
+            toastr()->success(__('messages.Delete'));
+            return redirect()->route('Classroom.index');
         } else {
             $delete_all_id = array_slice(explode(',', $request->delete_all_id), 0);
 
             ClassRoom::whereIn('id', $delete_all_id)->Delete();
 
-            return redirect()->route('Classroom.index')->with(['deleted' => __('ClassRoom/ClassRoom.deleted')]);
+            toastr()->success(__('messages.Delete'));
+            return redirect()->route('Classroom.index');
         }
     }
 

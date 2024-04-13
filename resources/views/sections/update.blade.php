@@ -1,27 +1,15 @@
 @extends('layouts.master')
 @section('css')
-
+    @toastr_css
 @section('title')
-    {{ __('sections/sections.edit_Sections') }}
+    تعديل القسم
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
-<div class="page-title">
-    <div class="row">
-        <div class="col-sm-6">
-            <h4 class="mb-0">{{ __('sections/sections.edit_Sections') }}</h4>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                <li class="breadcrumb-item"><a href="#"
-                        class="default-color">{{ __('sections/sections.sections') }}</a>
-                </li>
-                <li class="breadcrumb-item active">{{ __('sections/sections.Sections_list') }}</li>
-            </ol>
-        </div>
-    </div>
-</div>
+@section('PageTitle')
+    تعديل القسم
+@stop
 <!-- breadcrumb -->
 @endsection
 @section('content')
@@ -36,47 +24,13 @@
     </div>
 @endif
 
-@if (session()->has('add'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('sections/sections.Add') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
-
-@if (session()->has('Err'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('sections/sections.Err') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
-@if (session()->has('deleted'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('sections/sections.deleted') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
 <!-- row -->
 <div class="row">
     <div class="col-md-12 mb-30">
         <div class="card card-statistics h-100">
             <div class="card-body">
 
-                <a class="button x-small mb-4"
+                <a class="btn btn-success btn-sm mb-4" role="button" aria-pressed="true"
                     href="{{ route('sections.index') }}">{{ __('sections/sections.Back') }}</a>
                 <form action="{{ route('sections.update', $Section->id) }}" method="POST">
                     {{ csrf_field() }}
@@ -135,18 +89,20 @@
                             <label class="form-check-label"
                                 for="exampleCheck1">{{ __('sections/sections.Status') }}</label><br>
 
-                            {{-- <div class="col">
-                                    <label for="inputName" class="control-label">{{ trans('Sections_trans.Name_Teacher') }}</label>
-                                    <select multiple name="teacher_id[]" class="form-control" id="exampleFormControlSelect2">
-                                        @foreach ($list_Sections->teachers as $teacher)
-                                            <option selected value="{{$teacher['id']}}">{{$teacher['Name']}}</option>
-                                        @endforeach
+                            <div class="col">
+                                <label for="inputName"
+                                    class="control-label">{{ __('sections/sections.Name_Teacher') }}</label><br>
+                                <select multiple name="teacher_id[]" class="form-control"
+                                    id="exampleFormControlSelect2">
+                                    @foreach ($Section->teachers as $teacher)
+                                        <option selected value="{{ $teacher['id'] }}">{{ $teacher['Name'] }}</option>
+                                    @endforeach
 
-                                        @foreach ($teachers as $teacher)
-                                            <option value="{{$teacher->id}}">{{$teacher->Name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div> --}}
+                                    @foreach ($teachers as $teacher)
+                                        <option value="{{ $teacher->id }}">{{ $teacher->Name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -165,4 +121,6 @@
 @endsection
 @section('js')
 
+@toastr_js
+@toastr_render
 @endsection

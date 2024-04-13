@@ -1,27 +1,15 @@
 @extends('layouts.master')
 @section('css')
-
+    @toastr_css
 @section('title')
-    {{ __('teachers/teachers.edit_Teachers') }}
+    تعديل بيانات المعلم
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
-<div class="page-title">
-    <div class="row">
-        <div class="col-sm-6">
-            <h4 class="mb-0">{{ __('teachers/teachers.edit_Teachers') }}</h4>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                <li class="breadcrumb-item"><a href="#"
-                        class="default-color">{{ __('teachers/teachers.Teachers') }}</a>
-                </li>
-                <li class="breadcrumb-item active">{{ __('teachers/teachers.Teachers_List') }}</li>
-            </ol>
-        </div>
-    </div>
-</div>
+@section('PageTitle')
+    تعديل بيانات المعلم
+@stop
 <!-- breadcrumb -->
 @endsection
 @section('content')
@@ -34,40 +22,6 @@
             @endforeach
         </ul>
     </div>
-@endif
-
-@if (session()->has('add'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('teachers/teachers.Add') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
-
-@if (session()->has('Err'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('teachers/teachers.Err') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
-@if (session()->has('deleted'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('teachers/teachers.deleted') }}',
-                type: "success"
-            })
-        }
-    </script>
 @endif
 
 <!-- row -->
@@ -89,7 +43,7 @@
                 <div class="col-xs-12">
                     <div class="col-md-12">
 
-                        <a class="button x-small mb-4"
+                        <a class="btn btn-success btn-sm mb-4" role="button" aria-pressed="true"
                             href="{{ route('teachers.index') }}">{{ __('teachers/teachers.Back') }}</a>
 
                         <br>
@@ -207,4 +161,6 @@
 @endsection
 @section('js')
 
+@toastr_js
+@toastr_render
 @endsection

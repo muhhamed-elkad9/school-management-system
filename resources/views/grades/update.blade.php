@@ -1,26 +1,15 @@
 @extends('layouts.master')
 @section('css')
-
+    @toastr_css
 @section('title')
-    {{ __('grades/Grades.edit_Grade') }}
+    تعديل المرحلة
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
-<div class="page-title">
-    <div class="row">
-        <div class="col-sm-6">
-            <h4 class="mb-0">{{ __('grades/Grades.edit_Grade') }}</h4>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                <li class="breadcrumb-item"><a href="#" class="default-color">{{ __('grades/Grades.Dashboard') }}</a>
-                </li>
-                <li class="breadcrumb-item active">{{ __('grades/Grades.Greades') }}</li>
-            </ol>
-        </div>
-    </div>
-</div>
+@section('PageTitle')
+    تعديل المرحلة
+@stop
 <!-- breadcrumb -->
 @endsection
 @section('content')
@@ -35,47 +24,14 @@
     </div>
 @endif
 
-@if (session()->has('add'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('grades/Grades.Add') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
-
-@if (session()->has('Err'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('grades/Grades.Err') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
-@if (session()->has('deleted'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('grades/Grades.deleted') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
 <!-- row -->
 <div class="row">
     <div class="col-md-12 mb-30">
         <div class="card card-statistics h-100">
             <div class="card-body">
 
-                <a class="button x-small mb-4" href="{{ route('grade.index') }}">{{ __('grades/Grades.Back') }}</a>
+                <a class="btn btn-success btn-sm mb-4" role="button" aria-pressed="true"
+                    href="{{ route('grade.index') }}">{{ __('grades/Grades.Back') }}</a>
 
                 <form action="{{ route('grade.update', $Grades->id) }}" method="POST">
                     {{ method_field('POST') }}
@@ -113,5 +69,6 @@
 <!-- row closed -->
 @endsection
 @section('js')
-
+@toastr_js
+@toastr_render
 @endsection

@@ -1,27 +1,15 @@
 @extends('layouts.master')
 @section('css')
-
+    @toastr_css
 @section('title')
-    {{ __('sections/sections.add_Sections') }}
+    اضافة قسم جديد
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
-<div class="page-title">
-    <div class="row">
-        <div class="col-sm-6">
-            <h4 class="mb-0">{{ __('sections/sections.add_Sections') }}</h4>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                <li class="breadcrumb-item"><a href="#"
-                        class="default-color">{{ __('sections/sections.sections') }}</a>
-                </li>
-                <li class="breadcrumb-item active">{{ __('sections/sections.Sections_list') }}</li>
-            </ol>
-        </div>
-    </div>
-</div>
+@section('PageTitle')
+    اضافة قسم جديد
+@stop
 <!-- breadcrumb -->
 @endsection
 @section('content')
@@ -36,47 +24,13 @@
     </div>
 @endif
 
-@if (session()->has('add'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('sections/sections.Add') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
-
-@if (session()->has('Err'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('sections/sections.Err') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
-@if (session()->has('deleted'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: '{{ __('sections/sections.deleted') }}',
-                type: "success"
-            })
-        }
-    </script>
-@endif
-
 <!-- row -->
 <div class="row">
     <div class="col-md-12 mb-30">
         <div class="card card-statistics h-100">
             <div class="card-body">
 
-                <a class="button x-small mb-4"
+                <a class="btn btn-success btn-sm mb-4" role="button" aria-pressed="true"
                     href="{{ route('sections.index') }}">{{ __('sections/sections.Back') }}</a>
 
                 <form action="{{ route('sections.store') }}" method="POST">
@@ -115,6 +69,15 @@
                         <select name="Class_id" class="custom-select"></select>
                     </div><br>
 
+                    <div class="col">
+                        <label for="inputName" class="control-label">{{ __('sections/sections.Name_Teacher') }}</label>
+                        <select multiple name="teacher_id[]" class="form-control" id="exampleFormControlSelect2">
+                            @foreach ($teachers as $teacher)
+                                <option value="{{ $teacher->id }}">{{ $teacher->Name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">{{ __('sections/sections.Save') }}</button>
                     </div>
@@ -127,5 +90,30 @@
 <!-- row closed -->
 @endsection
 @section('js')
+@toastr_js
+@toastr_render
 
+<script>
+    $(document).ready(function() {
+        $('select[name="Grade_id"]').on('change', function() {
+            var Grade_id = $(this).val();
+            if (Grade_id) {
+                $.ajax({
+                    url: "{{ URL::to('sections/classes') }}/" + Grade_id,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('select[name="Class_id"]').empty();
+                        $.each(data, function(key, value) {
+                            $('select[name="Class_id"]').append('<option value="' +
+                                key + '">' + value + '</option>');
+                        });
+                    },
+                });
+            } else {
+                console.log('AJAX load did not work');
+            }
+        });
+    });
+</script>
 @endsection

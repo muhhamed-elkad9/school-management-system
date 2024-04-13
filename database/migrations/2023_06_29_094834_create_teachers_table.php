@@ -18,6 +18,8 @@ class CreateTeachersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('Name');
+            $table->string('avatar')->nullable();
+            $table->string('roles_name')->default('{"ar":"معلم","en":"Teacher"}');
             $table->bigInteger('Specialization_id')->unsigned();
             $table->foreign('Specialization_id')->references('id')->on('specializations')->onDelete('cascade');
             $table->bigInteger('Gender_id')->unsigned();

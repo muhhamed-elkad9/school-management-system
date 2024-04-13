@@ -1,26 +1,16 @@
 @extends('layouts.master')
 @section('css')
+    @toastr_css
     @livewireStyles
 @section('title')
-    {{ __('livewire/livewire.Add_Parent') }}
+    اضافة ولي أمر
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
-<div class="page-title">
-    <div class="row">
-        <div class="col-sm-6">
-            <h4 class="mb-0">{{ __('livewire/livewire.Add_Parent') }}</h4>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                <li class="breadcrumb-item"><a href="#"
-                        class="default-color">{{ __('livewire/livewire.Parents') }}</a></li>
-                <li class="breadcrumb-item active">{{ __('livewire/livewire.Add_Parent') }}</li>
-            </ol>
-        </div>
-    </div>
-</div>
+@section('PageTitle')
+    اضافة ولي أمر
+@stop
 <!-- breadcrumb -->
 @endsection
 @section('content')
@@ -37,5 +27,7 @@
 <!-- row closed -->
 @endsection
 @section('js')
+@toastr_js
+@toastr_render
 @livewireScripts
 @endsection

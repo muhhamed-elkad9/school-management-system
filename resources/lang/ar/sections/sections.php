@@ -24,6 +24,7 @@ return [
     'Name_Grade' => 'اسم المرحلة',
     'Select_Grade' => 'تحديد اسم المرحلة',
     'Name_Class' => 'اسم الصف',
+    'Name_Teacher' => 'اسم المعلم',
     'Status' => 'الحالة',
     'Status_Section_AC' => 'نشط',
     'Status_Section_No' => 'غير نشط',

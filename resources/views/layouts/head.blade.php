@@ -1,6 +1,5 @@
 <!-- Title -->
 <title>@yield('title')</title>
-
 <!-- Favicon -->
 <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.ico') }}" type="image/x-icon" />
 
@@ -16,8 +15,6 @@
 <!--Internal   Notify -->
 <link href="{{ URL::asset('assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
 @yield('css')
-<!--- Style css -->
-<link href="{{ URL::asset('assets/css/style.css') }}" rel="stylesheet">
 
 
 <!--- Style css -->

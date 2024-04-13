@@ -41,7 +41,8 @@ class GradeController extends Controller
 
         if (Grade::where('Name->ar', $request->Name)->orwhere('Name->en', $request->Name_en)->exists()) {
 
-            return redirect()->back()->withErrors(['error' => 'اسم المرحلة موجود من قبل']);
+            toastr()->success(__('messages.Err_Grade'));
+            return redirect()->back();
         }
 
         try {
@@ -52,28 +53,13 @@ class GradeController extends Controller
                 'Notes' => $request->Notes,
             ]);
 
-            return redirect()->route('grade.index')->with(['add' => __('grades/Grades.Add')]);
+            toastr()->success(__('messages.success'));
+            return redirect()->route('grade.index');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show()
-    {
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     public function edit($id)
     {
         $Grades = Grade::find($id);
@@ -81,56 +67,48 @@ class GradeController extends Controller
         return view('grades.update', compact('Grades'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     public function update(StoreGrades $request, $id)
     {
-        // try {
-        $validated = $request->validated();
+        try {
+            // $validated = $request->validated();
 
-        $Grades = Grade::find($id);
-        if (!$Grades)
-            return redirect()->back();
+            // $Grades = Grade::find($id);
+            // if (!$Grades)
+            //     return redirect()->back();
 
-        $Grades->update([
-            'Name' => ['en' => $request->Name_en, 'ar' => $request->Name],
-            'Notes' => $request->Notes,
-        ]);
+            // $Grades->update([
+            //     'Name' => ['en' => $request->Name_en, 'ar' => $request->Name],
+            //     'Notes' => $request->Notes,
+            // ]);
 
-        return redirect()->route('grade.index')->with(['edit' => __('grades/Grades.edit')]);
-        // } catch (\Exception $e) {
-        //     return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-        // }
+            // toastr()->success(__('messages.Update'));
+            // return redirect()->route('grade.index');
+
+            return $request;
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     public function destroy(Request $request, $id)
     {
         $My_Class = Classroom::where('Grade_id', $request->id)->pluck('Grade_id');
-
-
 
         if ($My_Class->count() == 0) {
             $Grades = Grade::find($id);
 
             if (!$Grades) {
-                return redirect()->route('grade.index')->with(['Err' => __('grades/Grades.Err')]);
+                toastr()->error(__('messages.error'));
+                return redirect()->route('grade.index');
             } else {
                 $Grades->delete();
 
-                return redirect()->route('grade.index')->with(['deleted' => __('grades/Grades.deleted')]);
+                toastr()->success(__('messages.Delete'));
+                return redirect()->route('grade.index');
             }
         } else {
-            return redirect()->back()->with(['Err_Grade' => __('grades/Grades.Err_Grade')]);
+            toastr()->error(__('messages.Err_Grade'));
+            return redirect()->back();
         }
     }
 }

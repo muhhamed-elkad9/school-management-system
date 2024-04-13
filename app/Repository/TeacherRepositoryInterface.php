@@ -21,8 +21,8 @@ interface TeacherRepositoryInterface
     public function editTeachers($id);
 
     // UpdateTeachers
-    public function UpdateTeachers($request, $id);
+    public function UpdateTeachers($request);
 
     // DeleteTeachers
-    public function DeleteTeachers($id);
+    public function DeleteTeachers($request);
 }

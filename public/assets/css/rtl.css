@@ -1,4 +1,394 @@
 @charset "UTF-8";
+
+
+
+/*!
+ * =============================================================
+ * dropify v0.2.2 - Override your input files with style.
+ * https://github.com/JeremyFagis/dropify
+ *
+ * (c) 2017 - Jeremy FAGIS <jeremy@fagis.fr> (http://fagis.fr)
+ * =============================================================
+ */
+
+ @charset "UTF-8";
+ @font-face {
+   font-family: 'dropify';
+   src: url("../fonts/dropify.eot");
+   src: url("../fonts/dropify.eot#iefix") format("embedded-opentype"), url("../fonts/dropify.woff") format("woff"), url("../fonts/dropify.ttf") format("truetype"), url("../fonts/dropify.svg#dropify") format("svg");
+   font-weight: normal;
+   font-style: normal; }
+ 
+ [class^="dropify-font-"]:before, [class*=" dropify-font-"]:before, .dropify-font:before, .dropify-wrapper .dropify-message span.file-icon:before {
+   font-family: "dropify";
+   font-style: normal;
+   font-weight: normal;
+   speak: none;
+   display: inline-block;
+   text-decoration: inherit;
+   width: 1em;
+   margin-left: .2em;
+   margin-right: .2em;
+   text-align: center;
+   font-variant: normal;
+   text-transform: none;
+   line-height: 1em; }
+ 
+ .dropify-font-upload:before, .dropify-wrapper .dropify-message span.file-icon:before {
+   content: '\e800'; }
+ 
+ .dropify-font-file:before {
+   content: '\e801'; }
+ 
+ .dropify-wrapper {
+   /* display: block; */
+   /* position: relative; */
+   /* cursor: pointer; */
+   overflow: hidden;
+   /* width: 100%; */
+   /* max-width: 100%; */
+   height: 200px;
+   /* padding: 5px 10px; */
+   /* font-size: 14px; */
+   /* line-height: 22px; */
+   /* color:#334151; */
+   background-color: #FFF;
+   background-image: none;
+   text-align: center;
+   border: 1px solid #e1e6f1;
+   -webkit-transition: border-color 0.15s linear;
+   transition: border-color 0.15s linear;
+   }
+   .dropify-wrapper:hover {
+     background-size: 30px 30px;
+     background-image: -webkit-linear-gradient(135deg, #e7ecf6 25%, transparent 25%, transparent 50%, #e7ecf6 50%, #e7ecf6 75%, transparent 75%, transparent);
+     background-image: linear-gradient(-45deg, #e7ecf6 25%, transparent 25%, transparent 50%, #e7ecf6 50%, #e7ecf6 75%, transparent 75%, transparent);
+     -webkit-animation: stripes 2s linear infinite;
+             animation: stripes 2s linear infinite; }
+   .dropify-wrapper.has-preview .dropify-clear {
+     display: block; }
+   .dropify-wrapper.has-error {
+     border-color: #F34141; }
+     .dropify-wrapper.has-error .dropify-message .dropify-error {
+       display: block; }
+     .dropify-wrapper.has-error:hover .dropify-errors-container  {
+       visibility: visible;
+       opacity: 1;
+       -webkit-transition-delay: 0s;
+               transition-delay: 0s; }
+   .dropify-wrapper.disabled input {
+     cursor: not-allowed; }
+   .dropify-wrapper.disabled:hover {
+     background-image: none;
+     -webkit-animation: none;
+             animation: none; }
+   .dropify-wrapper.disabled .dropify-message {
+     opacity: 0.5;
+     text-decoration: line-through; }
+   .dropify-wrapper.disabled .dropify-infos-message {
+     display: none; }
+   .dropify-wrapper input {
+     position: absolute;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     height: 100%;
+     width: 100%;
+     opacity: 0;
+     cursor: pointer;
+     z-index: 5; }
+   .dropify-wrapper .dropify-message {
+     position: relative;
+     top: 50%;
+     -webkit-transform: translateY(-50%);
+             transform: translateY(-50%); }
+     .dropify-wrapper .dropify-message span.file-icon {
+       font-size: 50px;
+       color: #99a6b7 ; }
+     .dropify-wrapper .dropify-message p {
+       margin: 5px 0 0 0; }
+       .dropify-wrapper .dropify-message p.dropify-error {
+         color: #F34141;
+         font-weight: bold;
+         display: none; }
+   .dropify-wrapper .dropify-clear {
+     display: none;
+     position: absolute;
+     opacity: 0;
+     z-index: 7;
+     top: 10px;
+     right: 10px;
+     background: none;
+     border: 2px solid #FFF;
+     text-transform: uppercase;
+     font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial";
+     font-size: 11px;
+     padding: 4px 8px;
+     font-weight: bold;
+     color: #FFF;
+     -webkit-transition: all 0.15s linear;
+     transition: all 0.15s linear; }
+     .dropify-wrapper .dropify-clear:hover {
+       background: rgba(255, 255, 255, 0.2); }
+   .dropify-wrapper .dropify-preview {
+     display: none;
+     position: absolute;
+     z-index: 1;
+     background-color: #FFF;
+     padding: 5px;
+     width: 100%;
+     height: 100%;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     overflow: hidden;
+     text-align: center; }
+     .dropify-wrapper .dropify-preview .dropify-render img {
+       top: 50%;
+       -webkit-transform: translate(0, -50%);
+               transform: translate(0, -50%);
+       position: relative;
+       max-width: 100%;
+       max-height: 100%;
+       background-color: #FFF;
+       -webkit-transition: border-color 0.15s linear;
+       transition: border-color 0.15s linear; }
+     .dropify-wrapper .dropify-preview .dropify-render i {
+       font-size: 70px;
+       top: 50%;
+       left: 50%;
+       -webkit-transform: translate(-50%, -50%);
+               transform: translate(-50%, -50%);
+       position: absolute;
+       color: #777; }
+     .dropify-wrapper .dropify-preview .dropify-render .dropify-extension {
+       position: absolute;
+       top: 50%;
+       left: 50%;
+       -webkit-transform: translate(-50%, -50%);
+               transform: translate(-50%, -50%);
+       margin-top: 10px;
+       text-transform: uppercase;
+       font-weight: 900;
+       letter-spacing: -0.03em;
+       font-size: 13px;
+       width: 42px;
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis; }
+     .dropify-wrapper .dropify-preview .dropify-infos {
+       position: absolute;
+       left: 0;
+       top: 0;
+       right: 0;
+       bottom: 0;
+       z-index: 3;
+       background: rgba(0, 0, 0, 0.7);
+       opacity: 0;
+       -webkit-transition: opacity 0.15s linear;
+       transition: opacity 0.15s linear; }
+       .dropify-wrapper .dropify-preview .dropify-infos .dropify-infos-inner {
+         position: absolute;
+         top: 50%;
+         -webkit-transform: translate(0, -40%);
+                 transform: translate(0, -40%);
+         -webkit-backface-visibility: hidden;
+                 backface-visibility: hidden;
+         width: 100%;
+         padding: 0 20px;
+         -webkit-transition: all 0.2s ease;
+         transition: all 0.2s ease; }
+         .dropify-wrapper .dropify-preview .dropify-infos .dropify-infos-inner p {
+           padding: 0;
+           margin: 0;
+           position: relative;
+           width: 100%;
+           white-space: nowrap;
+           overflow: hidden;
+           text-overflow: ellipsis;
+           color: #FFF;
+           text-align: center;
+           line-height: 25px;
+           font-weight: bold; }
+           .dropify-wrapper .dropify-preview .dropify-infos .dropify-infos-inner p.dropify-infos-message {
+             margin-top: 15px;
+             padding-top: 15px;
+             font-size: 12px;
+             position: relative;
+             opacity: 0.5; }
+             .dropify-wrapper .dropify-preview .dropify-infos .dropify-infos-inner p.dropify-infos-message::before {
+               content: '';
+               position: absolute;
+               top: 0;
+               left: 50%;
+               -webkit-transform: translate(-50%, 0);
+                       transform: translate(-50%, 0);
+               background: #FFF;
+               width: 30px;
+               height: 2px; }
+   .dropify-wrapper:hover .dropify-clear {
+     opacity: 1; }
+   .dropify-wrapper:hover .dropify-preview .dropify-infos {
+     opacity: 1; }
+     .dropify-wrapper:hover .dropify-preview .dropify-infos .dropify-infos-inner {
+       margin-top: -5px; }
+   .dropify-wrapper.touch-fallback {
+     height: auto !important; }
+     .dropify-wrapper.touch-fallback:hover {
+       background-image: none;
+       -webkit-animation: none;
+               animation: none; }
+     .dropify-wrapper.touch-fallback .dropify-preview {
+       position: relative;
+       padding: 0; }
+       .dropify-wrapper.touch-fallback .dropify-preview .dropify-render {
+         display: block;
+         position: relative; }
+         .dropify-wrapper.touch-fallback .dropify-preview .dropify-render .dropify-font-file {
+           position: relative;
+           -webkit-transform: translate(0, 0);
+                   transform: translate(0, 0);
+           top: 0;
+           left: 0; }
+           .dropify-wrapper.touch-fallback .dropify-preview .dropify-render .dropify-font-file::before {
+             margin-top: 30px;
+             margin-bottom: 30px; }
+         .dropify-wrapper.touch-fallback .dropify-preview .dropify-render img {
+           position: relative;
+           -webkit-transform: translate(0, 0);
+                   transform: translate(0, 0); }
+       .dropify-wrapper.touch-fallback .dropify-preview .dropify-infos {
+         position: relative;
+         opacity: 1;
+         background: transparent; }
+         .dropify-wrapper.touch-fallback .dropify-preview .dropify-infos .dropify-infos-inner {
+           position: relative;
+           top: 0;
+           -webkit-transform: translate(0, 0);
+                   transform: translate(0, 0);
+           padding: 5px 90px 5px 0; }
+           .dropify-wrapper.touch-fallback .dropify-preview .dropify-infos .dropify-infos-inner p {
+             padding: 0;
+             margin: 0;
+             position: relative;
+             width: 100%;
+             white-space: nowrap;
+             overflow: hidden;
+             text-overflow: ellipsis;
+             color: #777;
+             text-align: left;
+             line-height: 25px; }
+             .dropify-wrapper.touch-fallback .dropify-preview .dropify-infos .dropify-infos-inner p.dropify-filename {
+               font-weight: bold; }
+             .dropify-wrapper.touch-fallback .dropify-preview .dropify-infos .dropify-infos-inner p.dropify-infos-message {
+               margin-top: 0;
+               padding-top: 0;
+               font-size: 11px;
+               position: relative;
+               opacity: 1; }
+               .dropify-wrapper.touch-fallback .dropify-preview .dropify-infos .dropify-infos-inner p.dropify-infos-message::before {
+                 display: none; }
+     .dropify-wrapper.touch-fallback .dropify-message {
+       -webkit-transform: translate(0, 0);
+               transform: translate(0, 0);
+       padding: 40px 0; }
+     .dropify-wrapper.touch-fallback .dropify-clear {
+       top: auto;
+       bottom: 23px;
+       opacity: 1;
+       border-color: rgba(119, 119, 119, 0.7);
+       color: #777; }
+     .dropify-wrapper.touch-fallback.has-preview .dropify-message {
+       display: none; }
+     .dropify-wrapper.touch-fallback:hover .dropify-preview .dropify-infos .dropify-infos-inner {
+       margin-top: 0; }
+   .dropify-wrapper .dropify-loader {
+     position: absolute;
+     top: 15px;
+     right: 15px;
+     display: none;
+     z-index: 9; }
+     .dropify-wrapper .dropify-loader::after {
+       display: block;
+       position: relative;
+       width: 20px;
+       height: 20px;
+       -webkit-animation: rotate 0.6s linear infinite;
+               animation: rotate 0.6s linear infinite;
+       border-radius: 100%;
+       border-top: 1px solid #CCC;
+       border-bottom: 1px solid #777;
+       border-left: 1px solid #CCC;
+       border-right: 1px solid #777;
+       content: ''; }
+   .dropify-wrapper .dropify-errors-container {
+     position: absolute;
+     left: 0;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     z-index: 3;
+     background: rgba(243, 65, 65, 0.8);
+     text-align: left;
+     visibility: hidden;
+     opacity: 0;
+     -webkit-transition: visibility 0s linear 0.15s,opacity 0.15s linear;
+     transition: visibility 0s linear 0.15s,opacity 0.15s linear; }
+     .dropify-wrapper .dropify-errors-container ul {
+       padding: 10px 20px;
+       margin: 0;
+       position: absolute;
+       left: 0;
+       top: 50%;
+       -webkit-transform: translateY(-50%);
+               transform: translateY(-50%); }
+       .dropify-wrapper .dropify-errors-container ul li {
+         margin-left: 20px;
+         color: #FFF;
+         font-weight: bold; }
+     .dropify-wrapper .dropify-errors-container.visible {
+       visibility: visible;
+       opacity: 1;
+       -webkit-transition-delay: 0s;
+               transition-delay: 0s; }
+   .dropify-wrapper ~ .dropify-errors-container ul {
+     padding: 0;
+     margin: 15px 0; }
+     .dropify-wrapper ~ .dropify-errors-container ul li {
+       margin-left: 20px;
+       color: #F34141;
+       font-weight: bold; }
+ 
+ @-webkit-keyframes stripes {
+   from {
+     background-position: 0 0; }
+   to {
+     background-position: 60px 30px; } }
+ 
+ @keyframes stripes {
+   from {
+     background-position: 0 0; }
+   to {
+     background-position: 60px 30px; } }
+ 
+ @-webkit-keyframes rotate {
+   0% {
+     -webkit-transform: rotateZ(-360deg);
+             transform: rotateZ(-360deg); }
+   100% {
+     -webkit-transform: rotateZ(0deg);
+             transform: rotateZ(0deg); } }
+ 
+ @keyframes rotate {
+   0% {
+     -webkit-transform: rotateZ(-360deg);
+             transform: rotateZ(-360deg); }
+   100% {
+     -webkit-transform: rotateZ(0deg);
+             transform: rotateZ(0deg); } }
+ 
 /*
 Template:  Webmin - Bootstrap 4 & Angular 5 Admin Dashboard Template
 Author: potenzaglobalsolutions.com
@@ -38,6 +428,8 @@ NOTE: This file includes all admin Template plugins and Shortcodes. If you don't
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap');
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -75,8 +467,7 @@ NOTE: This file includes all admin Template plugins and Shortcodes. If you don't
   box-sizing: border-box; }
 
 html {
-  font-family: sans-serif;
-  line-height: 1.15;
+    line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -ms-overflow-style: scrollbar;
@@ -101,7 +492,7 @@ section {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: 'Cairo', sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -4117,6 +4508,208 @@ tbody.collapse.show {
   .card-columns .card {
     display: inline-block;
     width: 100%; } }
+
+    .main-img-user {
+        display: inline-block;
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        text-align: center;
+      }
+    
+      .main-img-user img {
+        width: 100% !important;
+        height: 100% !important;
+        -o-object-fit: cover;
+           object-fit: cover;
+        border-radius: 100%;
+      }
+    
+      .main-img-user {
+        display: inline-block;
+        position: relative;
+        width: 36px;
+        height: 36px;
+        border-radius: 100%;
+        text-align: center;
+      }
+    
+      .main-img-user img {
+        -o-object-fit: cover;
+           object-fit: cover;
+        border-radius: 100%;
+      }
+    
+      .demo-avatar-group .main-img-user {
+        width: 40px;
+        height: 40px;
+      }
+    
+      .example .demo-avatar-group .main-img-user::after {
+        right: 3px;
+        bottom: 3px;
+      }
+    
+      .demo-avatar-group.main-avatar-list-stacked .main-img-user::after {
+        right: 1px;
+        bottom: 3px;
+      }
+    
+      .main-img-user::after {
+        content: '';
+        position: absolute;
+        bottom: 3px;
+        right: 0px;
+        width: 6px;
+        height: 6px;
+        background-color: #17b86a;
+        -webkit-box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.95);
+                box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.95);
+        border-radius: 100%;
+        display: block !important;
+      }
+    
+      .main-img-user.online::after {
+        background-color: #0ba360;
+      }
+    
+      .demo-avatar-group .main-img-user, .demo-avatar-group .main-avatar {
+        -ms-flex-negative: 0;
+            flex-shrink: 0;
+      }
+    
+      .demo-avatar-group .main-img-user + .main-img-user, .demo-avatar-group .main-img-user + .main-avatar {
+        margin-left: -5px;
+      }
+    
+      .demo-avatar-group .main-avatar + .main-img-user, .demo-avatar-group .main-avatar + .main-avatar {
+        margin-left: -5px;
+      }
+    
+      @media (min-width: 576px) {
+        .demo-avatar-group .main-img-user + .main-img-user, .demo-avatar-group .main-img-user + .main-avatar {
+          margin-left: -5px;
+        }
+        .demo-avatar-group .main-avatar + .main-img-user, .demo-avatar-group .main-avatar + .main-avatar {
+          margin-left: -5px;
+        }
+        .avatar-list .avatar:not(:last-child) {
+          margin-right: 5px !important;
+        }
+      }
+    
+      .main-img-user .avatar {
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 4px !important;
+      }
+    
+      .main-img-user::after {
+        display: none;
+      }
+    
+      .main-profile-overview .main-img-user::after {
+        display: none !important;
+      }
+    
+      .main-profile-overview .main-img-user::after {
+        display: none !important;
+      }
+    
+      .main-profile-overview .main-img-user {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 20px;
+      }
+    
+      .main-profile-overview .main-img-user {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 20px;
+      }
+    
+      .main-profile-overview .btn-icon-list .btn, .main-profile-overview .btn-icon-list .sp-container button {
+        border-radius: 100%;
+      }
+    
+      .profile-user .profile-edit {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        line-height: 30px;
+        left: 0;
+        background: #d5d4e0;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .fa-camera:before{
+        content:"";
+        color: #28a745;
+    }
+
+    .modal-body {
+        padding: 25px; }
+
+        .modal-dialog-scrollable .modal-body {
+            overflow-y: auto; }
+
+            .modal-body {
+                position: relative;
+                flex: 1 1 auto;
+                padding: 1rem; }
+
+                #modaldemo8 .modal-body {
+                    padding: 20px 25px; }
+
+                    .modal.effect-just-me .modal-body {
+                        color: rgba(255, 255, 255, 0.8);
+                        padding-left: 0;
+                        padding-right: 0; }
+                        .modal.effect-just-me .modal-body h6 {
+                          color: #fff; }
+
+                          .modal-content-demo .modal-body h6 {
+                            color: #242f48;
+                            font-size: 15px;
+                            margin-bottom: 15px; }
+                          
+                          .modal-content-demo .modal-body p {
+                            margin-bottom: 0; }
+
+                            .main-modal-calendar-schedule .modal-body {
+                                padding: 30px 25px; }
+
+                                .main-modal-calendar-event .modal-body {
+                                    padding: 20px;
+                                    background-color: #fff; }
+
+                                    @media (min-width: 576px) {
+                                        .main-modal-calendar-event .modal-body {
+                                          padding: 30px; } }
+
+                                          .dropify-wrapper input {
+                                            position: absolute;
+                                            top: 0;
+                                            right: 0;
+                                            bottom: 0;
+                                            left: 0;
+                                            height: 100%;
+                                            width: 100%;
+                                            opacity: 0;
+                                            cursor: pointer;
+                                            z-index: 5;
+                                        }
+
+      .sp-container .main-profile-overview .btn-icon-list button {
+        border-radius: 100%;
+      }
+
+      .main-profile-overview .main-img-user::after {
+        display: none !important;
+      }
 
 .breadcrumb {
   display: -webkit-box;
@@ -16139,9 +16732,9 @@ div.dataTables_wrapper div.dataTables_length label {
   white-space: nowrap; }
 
 div.dataTables_wrapper div.dataTables_length select {
-  width: 75px;
+  width: 80px;
   display: inline-block;
-  height: 47px !important; }
+  height: 53px !important; }
 
 div.dataTables_wrapper div.dataTables_filter {
   text-align: right; }
@@ -19768,11 +20361,12 @@ ol.ui.list ol li,
   top: 0; }
 
 html {
-  font-size: 14px; }
+  font-size: 14px;
+}
 
 body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
+
+    margin: 0;
   padding: 0;
   font-size: 0.95rem;
   color: #626262; }
@@ -22071,7 +22665,7 @@ footer a {
   height: calc(3.1rem + 2px); }
 
 select.form-control:not([size]):not([multiple]) {
-  height: calc(2.8rem + 2px); }
+  height: calc(3.4rem + 2px); }
 
 /* Sparkline chart */
 .jqstooltip {
